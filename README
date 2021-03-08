@@ -1,0 +1,19 @@
+RESUME
+====================
+
+The resume example is divided into two parts: res.ms and  for the example resume
+and tmac.res for the custom macros.
+
+To use this package, Neatroff has to be set up first:
+
+$ git clone git://github.com/litcave/neatroff_make.git
+$ cd neatroff_make/
+$ make init
+$ make neat
+
+The following commands obtain and initialize the ths
+package in neatroff_make/res:
+
+$ git clone git://github.com/nit-ce/neatroff_ths.git res
+$ cd res
+$ make
