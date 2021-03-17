@@ -17,13 +17,11 @@ GSOPTS = -dPDFSETTINGS=/prepress -dEmbedAllFonts=true \
 		-sPAPERSIZE=letter\
 		-sFONTPATH=$(BASE)/fonts/ -sFONTMAP=$(BASE)/fonts/Fontmap 
 
-PRE = cat $< | $(SOIN) | \
+PRE = $(SOIN) | \
 		$(REFR) $(REFROPTS) | $(PIC) | $(TBL) | $(EQN)
 # Target
 ROFFEXT = ms
 TARGETFORMAT = pdf
-LAST=$(shell ls -t *.$(ROFFEXT) | head -1 | sed -e "s/\.$(ROFFEXT)//")
-TARGET := $(addsuffix .$(TARGETFORMAT),$(basename $(LAST)))
 
 all: res.pdf
 .SUFFIXES: .$(ROFFEXT) .tr .ps .pdf .PDF .html
@@ -32,7 +30,7 @@ all: res.pdf
 	@ps2pdf $(GSOPTS) $< $@
 
 .$(ROFFEXT).ps:
-	cat $< | $(PRE) | $(ROFF) $(ROFFOPTS) $(MACROS) 2>$(ERRORFILE) | $(POST) $(POSTOPTS) >$@
+	cat $< | $(PRE) | $(ROFF) $(ROFFOPTS) $(MACROS) | $(POST) $(POSTOPTS) >$@
 
 .PHONY: deploy
 deploy: res.pdf
@@ -40,4 +38,4 @@ deploy: res.pdf
 
 .PHONY: clean
 clean:
-	rm -f $(LAST).ps $(LAST).pdf
+	rm -f *.ps *.pdf
