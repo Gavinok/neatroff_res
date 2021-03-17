@@ -69,7 +69,7 @@
 .\" Heading for a section
 .\" HEADING LIFE PHILOSOPY
 .de HEADING
-.	br
+.	sp
 .	cl \\*[RESUME.cl]
 .	ps \\n[HEADING.ps]
 .	ft TITLE

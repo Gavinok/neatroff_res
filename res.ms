@@ -1,3 +1,5 @@
+.\" remove blank lines
+.blm .
 .so tmac.res
 .\" Settup fonts
 .fp - TITLE AB
@@ -20,7 +22,6 @@ location
 .→ item1
 .→ item2
 .→ item3
-
 .HEADING LANGUAGES
 .RATINGS C 5
 .RATINGS C++ 4
@@ -28,7 +29,6 @@ location
 .RATINGS Python 4
 .RATINGS "POSIX Shell" 3
 .RATINGS GO 2
-
 .HEADING STORY OF MY LIFE
 .ad pl
 Those cements are nothing more than selects. It's an undeniable fact,
