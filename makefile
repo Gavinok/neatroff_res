@@ -29,39 +29,15 @@ TARGET := $(addsuffix .$(TARGETFORMAT),$(basename $(LAST)))
 CLEANLINTERCMD = sed -e 's/\.clean//'
 ERRORFILE=log.error
 
-all: $(TARGET)
+all: res.pdf
 .SUFFIXES: .$(ROFFEXT) .tr .ps .pdf .PDF .html
-
-lastpdf: $(LAST).pdf
-
-last:
-	@echo $(LAST).$(ROFFEXT)
 
 .ps.pdf:
 	@ps2pdf $(GSOPTS) $< $@
 
 .$(ROFFEXT).ps:
 	cat $< | $(PRE) | $(ROFF) $(ROFFOPTS) $(MACROS) 2>$(ERRORFILE) | $(POST) $(POSTOPTS) >$@
-	@$(MAKE) -s checkerrors
 
-tar:
-	base=$(basename $PWD)
-	tar -czf $(LAST).tar.gz .
-
-checkerrors: $(ERRORFILE)
-	@sed "s/<standard input>/$</g" $(ERRORFILE)
-	@rm -f $(ERRORFILE)
-
-%.clean: $(SRCS)
-	deroff $< > $@
-
-
-lint: $(SRCS).clean
-	-grep -Hn "[−’]" $<  | $(CLEANLINTERCMD)
-	writegood --parse $< | $(CLEANLINTERCMD)
-	proselint $<         | $(CLEANLINTERCMD)
-	diction --suggest --beginner $< | $(CLEANLINTERCMD)
-	rm $<
 
 clean:
 	rm -f $(LAST).ps $(LAST).pdf
