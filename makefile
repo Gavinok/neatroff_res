@@ -1,5 +1,4 @@
 # Neatroff settings
-include env
 BASE = $(PWD)/..
 ROFF = $(BASE)/neatroff/roff
 POST = $(BASE)/neatpost/post
@@ -38,10 +37,6 @@ all: res.pdf
 
 .$(ROFFEXT).ps:
 	cat $< | $(PRE) | $(ROFF) $(ROFFOPTS) $(MACROS) 2>$(ERRORFILE) | $(POST) $(POSTOPTS) >$@
-
-.PHONY: deploy
-deploy: res.pdf
-	scp $< $(HOST):.www/res.pdf
 
 .PHONY: clean
 clean:
