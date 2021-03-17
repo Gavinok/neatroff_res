@@ -25,10 +25,6 @@ TARGETFORMAT = pdf
 LAST=$(shell ls -t *.$(ROFFEXT) | head -1 | sed -e "s/\.$(ROFFEXT)//")
 TARGET := $(addsuffix .$(TARGETFORMAT),$(basename $(LAST)))
 
-# Errors
-CLEANLINTERCMD = sed -e 's/\.clean//'
-ERRORFILE=log.error
-
 all: res.pdf
 .SUFFIXES: .$(ROFFEXT) .tr .ps .pdf .PDF .html
 
@@ -37,6 +33,10 @@ all: res.pdf
 
 .$(ROFFEXT).ps:
 	cat $< | $(PRE) | $(ROFF) $(ROFFOPTS) $(MACROS) 2>$(ERRORFILE) | $(POST) $(POSTOPTS) >$@
+
+.PHONY: deploy
+deploy: res.pdf
+	./deploy $< 
 
 .PHONY: clean
 clean:
