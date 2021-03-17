@@ -17,3 +17,6 @@ package in neatroff_make/res:
 $ git clone git://github.com/Gavinok/neatroff_res.git res
 $ cd res
 $ make
+
+For an example of how this will look
+https://www.engr.uvic.ca/~gavinfre/res.pdf
