@@ -1,4 +1,9 @@
-.ll \n[.l]u+1i
+\" .ds fp.src /home/gavinok/neatroff_make_1/res
+\" .ds fp.mkfn /home/gavinok/neatroff_make_1/neatmkfn/mkfn
+\" .fp.ttf - FB fa-brands-400
+.ll \n[.l]u+300u
+.nr RESUME.margin 1c
+.po -230u
 .
 .nr TITLE.ps 25
 .nr HEADING.ps 15
@@ -8,15 +13,14 @@
 .ds RESUME.grey.cl #dddddd
 .
 .\" How big is the gap between columns
-.nr RESUME.gap 1c
+.nr RESUME.gap (1.3c)u
 .
 .\" Where does the first column end?
 .
 .nr RESUME.ll \n[.l] \"total line length
-.nr RESUME.margin 1c
 .nr RESUME.split 3.4i
 .
-.po -\n[RESUME.margin]u
+.nr RESUME.po \n[.o] \"original page offset
 .\" internal macro
 .de RATINGS.loop
 .	nr a.1 (\\$1-1)
@@ -50,6 +54,8 @@
 .	sp 4
 .	ps \\n[TITLE.ps]
 .	ft TITLE
+.nr TITLE.wid \w'\\$*'
+.mk TITLE
 \\$*
 .	ft
 .	ps
@@ -58,12 +64,39 @@
 .
 .\" Description of yourself
 .\" DESC Mother Fucking Boss
+.de DESC.doter
+.	if \\n[DESC.num]>0 \{\
+.	nr DESC.num -1
+\m[]\(ci\m[]
+.	\}
+..
 .de DESC
+.	ad l
 .	cl \\*[RESUME.cl]
 .	ft TITLE
-\\$*
+.	if !'\\*[email]'' \{\
+\\*[post.url mailto:\\*[email] "\\*[email]"]
+.	nr DESC.num +1
+.	\}
+.	if !'\\*[phone]'' \{\
+.	DESC.doter
+\\*[phone]
+.	nr DESC.num +1
+.	\}
+.	if !'\\*[github]'' \{\
+.	DESC.doter
+\\*[post.url http://github.com/\\*[github] "\f(FB\fP \\*[github]"]
+.	nr DESC.num +1
+.\}
+.\" .	if !'\\*[youtube]''\{\
+.\" .	DESC.doter
+.\" \\*[post.url \\*[youtube.url] "\\*[youtube]"]
+.\" .	nr DESC.num +1
+.\" .\}
 .	ft
 .	cl
+.br
+.ad b
 ..
 .
 .\" Heading for a section
@@ -83,32 +116,43 @@
 .	cl
 .	br
 ..
+.de SUBHEADING
+.	br
+.	ft B
+\\$*
+.\" use remaining line length for right side
+.	ft
+.	br
+..
 .de →
 .	br
 →
-.	sp -1.1
+.	sp -1.0
 .	in +150u
 .	ps -1
 \\$*
 .	ps
 .	in
+.	sp \\n[→.sp]u
 ..
 .
-.nr LEFT.ll \n[RESUME.split]u \" left side line length
-.
+.\" Begin the left side of the document
+.de LEFT
+.	ll \\n[RESUME.split]u
+.	mk TOP
+..
 .\" Begin the right side of the document
 .de RIGHT
 .	sp |\\n[TOP]u
-.	po \\n[.o]u+\\n[.i]u+\\n[LEFT.ll]u+\\n[RESUME.gap]u
-.	ll (\\n[RESUME.ll]u-\\n[.o]u)u
+.	nr ll+gap (\\n[RESUME.split]u+\\n[RESUME.gap]u)u
+.	po \\n[.o]u+\\n[.i]u+\\n[ll+gap]u
+.	ll \\n[RESUME.ll]u-\\n[ll+gap]u
 ..
-.\" Begin the left side of the document
-.de LEFT
-.	sp 2
-.	ll \\n[LEFT.ll]u
-.	mk TOP
+.de FULL
+.	br
+.	ll \\n[RESUME.ll]u
+.	po \\n[RESUME.po]u
 ..
-.
 .\" Print a grey line
 .\"   Used for seperating elements using .blm LINE
 .de LINE
@@ -119,4 +163,34 @@
 .	in
 .	cl
 .	br
+..
+.\" .EXP COMPANY_OR_TOPIC LOCATION TITLE DATES
+.de EXP
+.mk TMP
+.	ft B
+\\$1
+.	ft
+.	br
+.	if !'\\$2''\{\
+.		sp |\\n[TMP]u
+.		ad r
+\\$2
+.		br
+.		mk TMP
+.	\}
+.	ft I
+.	if !'\\$3''\{\
+.		ad l
+\\$3
+.		br
+.	\}
+.	ie !'\\$4''\{\
+.		ad r
+.		sp |\\n[TMP]u
+\\$4
+.		ft
+.	\}
+.	br
+.	ad l
+.	sp \\n[EXP.sp]u
 ..
